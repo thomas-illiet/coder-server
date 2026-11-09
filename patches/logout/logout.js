@@ -1,13 +1,14 @@
 // Runs in the browser, in the same module scope as code-server's workbench.
-// The applicator substitutes the JSON value from config.json for this token.
-// JSON encoding protects quotes and backslashes; no configuration is evaluated.
-((config) => {
+(() => {
+  // Edit this URL, then rebuild the Docker image.
+  const logoutUrl = 'https://toto.dev.echonet/hub/logout';
+
   // 4.145.2 aliases: Qe = CommandsRegistry, Ae = MenuRegistry,
   // O.GlobalActivity = the bottom-left Manage (gear) menu.
   // A distinct ID leaves code-server's built-in logout command untouched.
   Qe.registerCommand('code-server.customLogout', () => {
     // Same-tab navigation. The destination is responsible for ending the session.
-    window.location.assign(config.logoutUrl);
+    window.location.assign(logoutUrl);
   });
 
   // The last group places Logout after the standard configuration commands.
@@ -20,4 +21,4 @@
       title: 'Logout',
     },
   });
-})(__CODE_STATION_CONFIG__);
+})();

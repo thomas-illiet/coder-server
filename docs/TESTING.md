@@ -17,7 +17,7 @@ The application scripts do not check a checksum or read installation version met
 
 ## What is verified
 
-There are 25 cases per reference release:
+There are 24 cases per reference release:
 
 - Independent application without installation `package.json` and without backups.
 - Repeated application fails without modifying files.
@@ -26,9 +26,8 @@ There are 25 cases per reference release:
 - All seven feature combinations produce syntactically valid JavaScript with only
   the selected replacements present.
 - All six application orders retain the same behavior and a matching cache hash.
-- Invalid Logout JSON does not block the other features.
-- Welcome quotes, `$&` and placeholder-like text remain literal data.
-- Logout registers in the gear menu and passes its exact configured URL to navigation.
+- Welcome CSS quotes, `$&` and placeholder-like text remain literal data.
+- Logout registers in the gear menu and passes its exact inline URL to navigation.
   This is checked with stubs, without contacting the destination.
 
 The temporary tools tree contains only copied feature folders. There is no root
@@ -37,11 +36,12 @@ working directory to verify local-file resolution.
 
 ## Results — 9 November 2026
 
-**50 cases passed** after the JavaScript readability pass on the independent scripts.
+**48 cases passed** after moving the URL and page texts into JavaScript and removing
+the configuration files. The obsolete JSON configuration test was removed.
 Both official Linux AMD64 and macOS ARM64 browser-file references were tested on
 macOS. No Linux product process or Docker image build was run.
 
-The browser JavaScript was reformatted without changing its behavior; CSS is unchanged. Earlier
+The URL and page texts retain their previous values; CSS is unchanged. Earlier
 macOS browser checks covered hidden Chat controls, gear-menu Logout with Accounts
 hidden, and Code Station Welcome without its footer. Those checks included the
 Welcome actions, recent-project navigation, light/dark themes and a local Logout

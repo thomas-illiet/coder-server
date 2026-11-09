@@ -5,8 +5,9 @@
 The chosen design favors small standalone scripts over deduplication:
 
 1. Each feature folder must be usable after being copied alone elsewhere.
-2. Keep its `apply.cjs`, replacements, config and browser assets in that folder.
-   Do not add a central launcher, shared runtime helper or root configuration.
+2. Keep its `apply.cjs`, replacements and browser assets in that folder.
+   Keep the URL and page texts directly in JavaScript. Do not add separate config
+   files, a central launcher or a shared runtime helper.
 3. Duplicating the short replacement/cache sequence is acceptable. Keep
    the code explicit and readable; avoid building a general patch framework.
 4. A script may inspect and modify only its own intervention points. It must not
@@ -29,8 +30,8 @@ The chosen design favors small standalone scripts over deduplication:
 
 | Change | File |
 | --- | --- |
-| Logout URL | `patches/logout/config.json` |
-| Welcome text | `patches/welcome/config.json` |
+| Logout URL | `logoutUrl` in `patches/logout/logout.js` |
+| Welcome text | `brand` in `patches/welcome/welcome.js` |
 | Welcome layout/colors | `patches/welcome/welcome.css` |
 | Welcome behavior | `patches/welcome/welcome.js` |
 | Gear-menu behavior | `patches/logout/logout.js` |

@@ -37,9 +37,8 @@ If needed, search for Welcome in the command palette.
 
 1. [apply.cjs](apply.cjs): the independent build-time application script.
 2. [patch.json](patch.json): the single hook into the native page renderer.
-3. [welcome.js](welcome.js): the page's DOM, commands and lifecycle, in screen order.
+3. [welcome.js](welcome.js): page texts in `brand`, then DOM, commands and lifecycle.
 4. [welcome.css](welcome.css): layout, typography, states and theme colors.
-5. [config.json](config.json): this folder's own name, headline and introductory text.
 
 `welcome.js` is browser code. It is not an installation script and should not be
 run directly with Node. This folder's applicator embeds both JS and CSS in the
@@ -52,9 +51,9 @@ renderer anchor and no existing patched hook, then replaces it in memory. Checki
 for the patched hook is necessary because it contains the original anchor text.
 Missing/ambiguous text and repeat application fail before writes.
 
-It JSON-encodes the local configuration and CSS into the browser function in one
-substitution pass, then appends it. The config must provide the three documented
-text fields; there is no schema validator. Other feature code remains intact.
+It embeds the stylesheet as a JSON-encoded string in the browser function, then
+appends that function. The name, headline and introduction are already present
+in its `brand` object. Other feature code remains intact.
 
 The script requires one HTML loader, replaces its query with a hash of the final
 bundle, and writes JS and HTML. No version check, backup or browser-block update
@@ -84,11 +83,12 @@ variables inside its method. It still depends on this version's internal API.
 
 ## Page code, section by section
 
-### Configuration and DOM creation
+### Page texts and DOM creation
 
-`__CODE_STATION_CONFIG__` is replaced with serialized JSON. The renderer reads
-its `welcome` object. `el()` creates DOM elements and assigns `textContent`;
-configured text is never parsed as HTML. This also avoids Trusted Types HTML sinks.
+The `brand` object near the start of `welcome.js` contains `name`, `tagline` and
+`description`. Edit those JavaScript strings directly. `el()` creates DOM elements
+and assigns `textContent`; page text is never parsed as HTML. This also avoids
+Trusted Types HTML sinks.
 
 The renderer clears `categoriesSlideDisposables` to release subscriptions from
 the previous page before rebuilding it. It creates one `<main>` landmark with
@@ -101,8 +101,8 @@ The style element lives inside the categories slide and disappears with it.
 Every rule is scoped to `.cs-station`; the `:is(...)` prefix raises specificity
 above native Welcome rules without blanket `!important` declarations.
 
-The `>_` brand mark is plain text, not a downloaded logo. Edit `config.json` to
-change the name, tagline or description. Edit the CSS for spacing, colors or shape.
+The `>_` brand mark is plain text, not a downloaded logo. Edit `brand` in `welcome.js`
+to change the name, tagline or description. Edit the CSS for spacing, colors or shape.
 
 ### Working actions and customization shortcuts
 
@@ -149,7 +149,7 @@ Native `width-constrained` classes switch the layout to one column in narrow
 editors. Focus outlines and high-contrast borders are retained. No remote fonts,
 images or analytics requests are introduced.
 
-Text is English by configuration. It is not a full localization implementation.
+The page's strings are English. This is not a full localization implementation.
 The supplied branding does not include a corporate logo or invented external links.
 
 ## Upgrade and validation
@@ -161,7 +161,7 @@ On upgrade, inspect `buildCategoriesSlide`, `buildRecentlyOpenedList`,
 Verify the hook signature and command IDs. There is no version allowlist to update.
 
 Automated checks validate syntax, all patch combinations, rejection of repeat
-application, configuration encoding and cache updates. Earlier macOS browser tests
+application, CSS encoding and cache updates. Earlier macOS browser tests
 covered light/dark rendering, the six action buttons and recent-project navigation.
 The latest revision was checked for the absence of the entire footer and startup
 checkbox. Linux files were checked without running

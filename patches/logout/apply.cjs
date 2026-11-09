@@ -22,14 +22,9 @@ for (const { before, after, reason } of require('./patch.json').replacements) {
   js = js.replace(before, () => after);
 }
 
-// Embed the gear-menu code with the local config as literal JSON data.
-const config = require('./config.json');
+// Append the gear-menu code as written, including its destination URL.
 const code = fs.readFileSync(__dirname + '/logout.js', 'utf8');
-const configuredCode = code.replaceAll('__CODE_STATION_CONFIG__', () => {
-  return JSON.stringify(config);
-});
-
-js += '\n' + configuredCode;
+js += '\n' + code;
 
 // Refresh the loader URL so the deployed image does not reuse old browser code.
 const html = fs.readFileSync(htmlFile, 'utf8');

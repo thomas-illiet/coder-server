@@ -24,8 +24,8 @@ lib/vscode/out/vs/code/browser/workbench/workbench.js
 lib/vscode/out/vs/code/browser/workbench/workbench.html
 ```
 
-Each script reads only its own `patch.json`. Logout also reads its `config.json`
-and `logout.js`; Welcome reads its `config.json`, `welcome.js` and `welcome.css`.
+Each script reads only its own `patch.json`. Logout also reads `logout.js`;
+Welcome reads `welcome.js` and `welcome.css`. URL and page text live directly in JS.
 These paths are relative to the script, so a feature folder can be copied alone.
 The installation's `package.json` is never read.
 
@@ -37,9 +37,9 @@ The installation's `package.json` is never read.
    Checking `after` matters for Welcome because its hook contains the original prefix.
 3. Replace the exact text in memory. The manifest's `reason` identifies a failed edit.
    A replacement callback keeps literal `$&` sequences from being interpreted.
-4. For Logout and Welcome, append the browser code with JSON-encoded configuration.
-   Welcome also embeds its CSS. Its single substitution pass leaves placeholder-like
-   text inside configuration untouched. There is no configuration schema validator.
+4. Append Logout's browser code unchanged. For Welcome, replace its stylesheet token
+   with JSON-encoded CSS before appending the browser code. The replacement callback
+   preserves quotes, backslashes and `$&` in CSS. No configuration file is loaded.
 5. Read HTML and require one workbench loader. Compute a short SHA-256 of the final
    JavaScript and replace the loader's query with `?code-station=<hash>`.
 6. Write the JavaScript and HTML. No backup, temporary file or extra generated asset
@@ -56,12 +56,12 @@ workbench loader, without a custom query-based routing scheme.
 
 ## Independence and rebuilds
 
-The scripts do not inspect other features or generate their code. A malformed
-Logout config cannot affect Chat or Welcome. All six application orders are
-supported, although the appended code order and resulting hash may differ.
+The scripts do not inspect other features or generate their code. Each reads only
+its own source files. All six application orders are supported, although the
+appended code order and resulting hash may differ.
 Always run scripts sequentially because they write the same files.
 
-After editing a feature's configuration, JS or CSS, rebuild the image. Docker
+After editing a feature's JS or CSS, rebuild the image. Docker
 reruns its `COPY` and `RUN` steps using the preceding layer. To remove a feature,
 remove its steps and rebuild from the unpatched base. Do not apply a script a
 second time to an already-patched installation or inherit an old patched image.

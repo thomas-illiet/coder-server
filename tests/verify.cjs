@@ -176,30 +176,15 @@ for (const source of sources) {
       });
     }
 
-    check('invalid Logout config does not block Chat or Welcome', () => {
-      const file = path.join(temporary, 'logout', 'config.json');
+    check('Welcome CSS quotes and template-like text remain data', () => {
+      const file = path.join(temporary, 'welcome', 'welcome.css');
       const saved = fs.readFileSync(file);
-      fs.writeFileSync(file, '{invalid JSON');
-
-      try {
-        reject('logout');
-        run('chat');
-        run('welcome');
-      } finally {
-        fs.writeFileSync(file, saved);
-      }
-    });
-
-    check('Welcome quotes and template-like text remain data', () => {
-      const file = path.join(temporary, 'welcome', 'config.json');
-      const saved = fs.readFileSync(file);
-      const config = JSON.parse(saved);
-      config.welcome.description = 'Literal "quotes", $& and __CODE_STATION_CSS__';
-      fs.writeFileSync(file, JSON.stringify(config));
+      const css = saved + '\n/* Literal "quotes", $& and __CODE_STATION_CSS__ */\n';
+      fs.writeFileSync(file, css);
 
       try {
         run('welcome');
-        assert.ok(read('workbench.js').includes(JSON.stringify(config)));
+        assert.ok(read('workbench.js').includes(JSON.stringify(css)));
         const syntax = spawnSync(process.execPath, ['--input-type=module', '--check'], {
           input: read('workbench.js'),
           encoding: 'utf8',
@@ -210,46 +195,37 @@ for (const source of sources) {
       }
     });
 
-    check('Logout config remains literal data and preserves the exact URL', () => {
-      const file = path.join(temporary, 'logout', 'config.json');
-      const saved = fs.readFileSync(file);
-      const url = 'https://example.test/logout?quote="quoted"&value=$&';
-      fs.writeFileSync(file, JSON.stringify({ logoutUrl: url }));
+    check('Logout registers in the gear menu and uses the exact destination', () => {
+      run('logout');
+      const bundle = read('workbench.js');
+      const code = bundle.slice(bundle.indexOf('\n// Runs in the browser,'));
+      let command;
+      let destination;
 
-      try {
-        run('logout');
-        const bundle = read('workbench.js');
-        const code = bundle.slice(bundle.indexOf('\n// Runs in the browser,'));
-        let command;
-        let destination;
-
-        vm.runInNewContext(code, {
-          Qe: {
-            registerCommand: (_, fn) => {
-              command = fn;
+      vm.runInNewContext(code, {
+        Qe: {
+          registerCommand: (_, fn) => {
+            command = fn;
+          },
+        },
+        Ae: {
+          appendMenuItem: (menu, item) => {
+            assert.equal(menu, 'gear');
+            assert.equal(item.command.title, 'Logout');
+          },
+        },
+        O: { GlobalActivity: 'gear' },
+        window: {
+          location: {
+            assign: value => {
+              destination = value;
             },
           },
-          Ae: {
-            appendMenuItem: (menu, item) => {
-              assert.equal(menu, 'gear');
-              assert.equal(item.command.title, 'Logout');
-            },
-          },
-          O: { GlobalActivity: 'gear' },
-          window: {
-            location: {
-              assign: value => {
-                destination = value;
-              },
-            },
-          },
-        });
+        },
+      });
 
-        command();
-        assert.equal(destination, url);
-      } finally {
-        fs.writeFileSync(file, saved);
-      }
+      command();
+      assert.equal(destination, 'https://toto.dev.echonet/hub/logout');
     });
   } finally {
     fs.rmSync(temporary, { recursive: true, force: true });

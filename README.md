@@ -2,7 +2,7 @@
 
 Three standalone patch folders for **code-server 4.145.2**. Each has its own
 small application script, source files and documentation. There is **no central
-applicator, shared runtime helper or root configuration file**.
+applicator, shared runtime helper or separate configuration file**.
 
 ## Apply during the Docker image build
 
@@ -61,15 +61,13 @@ patches/
     README.md       Purpose, code walkthrough, limits and Docker example
   logout/
     apply.cjs       Standalone application script
-    config.json     Logout URL for this feature only
     patch.json      Accounts visibility replacement
-    logout.js       Gear-menu command, executed in the browser
+    logout.js       Destination URL and gear-menu command
     README.md
   welcome/
     apply.cjs       Standalone application script
-    config.json     Name and welcome text for this feature only
     patch.json      Native Welcome renderer hook
-    welcome.js      Page behavior; no footer or startup checkbox
+    welcome.js      Page texts and behavior; no footer or startup checkbox
     welcome.css     Theme-aware page styles
     README.md
 docs/               Operating notes, maintenance and validation report
@@ -80,15 +78,15 @@ archive/            Previous flat and centralized layouts, for recovery only
 The short file-edit/cache code is deliberately duplicated. Each feature
 can be read, changed, copied and applied without understanding the others.
 
-## Configuration and documentation
+## Customization and documentation
 
 - [Chat](patches/chat/README.md): top-right Chat/Agents control and Chat pane hidden.
 - [Logout](patches/logout/README.md): gear-menu Logout, Accounts icon hidden.
-  Edit [its config](patches/logout/config.json) for the destination URL.
+  Edit `logoutUrl` in [logout.js](patches/logout/logout.js) for the destination URL.
 - [Welcome](patches/welcome/README.md): Code Station page, without footer.
-  Edit [its config](patches/welcome/config.json) for the name and introduction.
+  Edit `brand` in [welcome.js](patches/welcome/welcome.js) for the name and introduction.
 
-After changing a feature's config, JS or CSS, rebuild and deploy the image.
+After changing a feature's JS or CSS, rebuild and deploy the image.
 Its `COPY` step brings in the changes and its `RUN` step reapplies the patch.
 No other patch needs editing. Each feature README explains its exact edits and browser code.
 

@@ -1,9 +1,14 @@
 // Browser code, not the patch applicator. Called by the native Welcome renderer.
 // DOM APIs avoid HTML parsing and work with the existing Trusted Types policy.
-// Configuration and CSS tokens are resolved once, while applying the patch.
+// The stylesheet token is resolved once, while applying the patch.
 function csRenderCodeStation(page) {
-  // Filled by apply.cjs from config.json; treated as data, never HTML.
-  const brand = __CODE_STATION_CONFIG__.welcome;
+  // Edit these texts, then rebuild the Docker image.
+  const brand = {
+    name: 'Code Station',
+    tagline: 'Your workspace. Ready when you are.',
+    description: 'Open a project, pick up where you left off, or start something new.',
+  };
+
   const doc = page.window.document;
 
   const el = (tag, className, text) => {

@@ -22,17 +22,14 @@ for (const { before, after, reason } of require('./patch.json').replacements) {
   js = js.replace(before, () => after);
 }
 
-// One substitution pass keeps quotes and placeholder-like text as literal data.
-const config = require('./config.json');
+// Embed the stylesheet as a JavaScript string; the page text lives in welcome.js.
 const css = fs.readFileSync(__dirname + '/welcome.css', 'utf8');
 const code = fs.readFileSync(__dirname + '/welcome.js', 'utf8');
-const placeholder = /__CODE_STATION_(CONFIG|CSS)__/g;
-const configuredCode = code.replace(placeholder, (_, kind) => {
-  const value = kind === 'CONFIG' ? config : css;
-  return JSON.stringify(value);
+const styledCode = code.replace('__CODE_STATION_CSS__', () => {
+  return JSON.stringify(css);
 });
 
-js += '\n' + configuredCode;
+js += '\n' + styledCode;
 
 // Refresh the loader URL so the deployed image does not reuse old browser code.
 const html = fs.readFileSync(htmlFile, 'utf8');
