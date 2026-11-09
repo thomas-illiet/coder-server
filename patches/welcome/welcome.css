@@ -1,0 +1,234 @@
+/* Code Station styles: embedded into workbench.js when the patch is applied.
+ * All selectors are scoped to .cs-station. VS Code variables follow its theme.
+ * The renderer raises selector specificity without using global !important rules.
+ * Native width-constrained classes provide the narrow-editor layout.
+ */
+
+.cs-station {
+  --cs-accent: var(--vscode-textLink-foreground);
+  --cs-muted: var(--vscode-descriptionForeground);
+  box-sizing: border-box;
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 24px;
+  color: var(--vscode-foreground);
+  line-height: 1.55;
+}
+
+.cs-station * {
+  box-sizing: border-box;
+}
+
+.cs-station .cs-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  font-weight: 650;
+  letter-spacing: .03em;
+}
+
+.cs-station .cs-mark {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  background: var(--vscode-button-background);
+  color: var(--vscode-button-foreground);
+  border-radius: 10px;
+  font: 700 19px ui-monospace,monospace;
+}
+
+.cs-station .cs-eyebrow {
+  color: var(--cs-accent);
+  font-size: 11px;
+  letter-spacing: .16em;
+  font-weight: 650;
+  margin: 0 0 12px;
+}
+
+.gettingStartedContainer .cs-station h1 {
+  font-size: clamp(28px,3vw,36px);
+  line-height: 1.15;
+  letter-spacing: -.04em;
+  font-weight: 650;
+  white-space: normal;
+  padding: 0;
+  margin: 0 0 12px;
+}
+
+.cs-station .cs-intro {
+  margin: 0;
+  color: var(--cs-muted);
+  font-size: 15px;
+  max-width: 560px;
+}
+
+.cs-station .cs-hero {
+  border-bottom: 1px solid var(--vscode-widget-border,var(--vscode-panel-border));
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+.cs-station .cs-actions {
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.cs-station .cs-action {
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid var(--vscode-widget-border,var(--vscode-panel-border));
+  border-radius: 10px;
+  background: var(--vscode-sideBar-background);
+  min-width: 0;
+}
+
+.cs-station .cs-action:hover {
+  background: var(--vscode-list-hoverBackground);
+  border-color: var(--cs-accent);
+}
+
+.cs-station .cs-action .codicon {
+  font-size: 22px;
+  color: var(--cs-accent);
+  margin-bottom: 6px;
+}
+
+.cs-station .cs-action strong {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.cs-station .cs-action small {
+  font-size: 12px;
+  color: var(--cs-muted);
+  line-height: 1.5;
+}
+
+.cs-station button:focus-visible {
+  outline: 2px solid var(--vscode-focusBorder);
+  outline-offset: 3px;
+}
+
+.cs-station .cs-lower {
+  display: grid;
+  grid-template-columns: minmax(0,1.35fr) minmax(0,1fr);
+  gap: 40px;
+}
+
+.gettingStartedContainer .cs-station h2 {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+  margin: 0 0 14px;
+}
+
+.cs-station .cs-section-note {
+  font-size: 12px;
+  color: var(--cs-muted);
+  margin: -8px 0 10px;
+}
+
+.cs-station .recently-opened {
+  min-width: 0;
+}
+
+.cs-station .recently-opened ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.cs-station .recently-opened li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  position: relative;
+  margin: 5px 0;
+  padding: 4px 0;
+}
+
+.cs-station .recently-opened .path {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  color: var(--cs-muted);
+  font-size: 11px;
+}
+
+.cs-station .recently-opened button {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cs-station .cs-tools {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cs-station .cs-tool {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 0;
+  font: inherit;
+  color: var(--vscode-textLink-foreground);
+  background: none;
+  border: 0;
+  cursor: pointer;
+  text-align: left;
+}
+
+.cs-station .cs-tool:hover {
+  text-decoration: underline;
+}
+
+.cs-station .cs-tool .codicon {
+  font-size: 17px;
+}
+
+.cs-station .cs-key {
+  margin-left: auto;
+  color: var(--cs-muted);
+  font: 11px ui-monospace,monospace;
+}
+
+.gettingStartedContainer.width-semi-constrained .cs-station {
+  padding: 24px 4px;
+}
+
+.gettingStartedContainer.width-semi-constrained .cs-station .cs-brand {
+  margin-bottom: 28px;
+}
+
+.gettingStartedContainer.width-constrained .cs-station .cs-actions,.gettingStartedContainer.width-constrained .cs-station .cs-lower {
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.gettingStartedContainer.width-constrained .cs-station .cs-action {
+  padding: 16px;
+}
+
+.gettingStartedContainer.width-constrained .cs-station .cs-brand {
+  margin-bottom: 20px;
+}
+
+.hc-black .cs-station .cs-action,.hc-light .cs-station .cs-action {
+  border-color: var(--vscode-contrastBorder);
+}

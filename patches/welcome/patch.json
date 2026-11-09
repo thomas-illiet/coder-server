@@ -1,0 +1,9 @@
+{
+  "replacements": [
+    {
+      "reason": "Use Code Station for the main Welcome page; retain the native renderer when a walkthrough is explicitly selected.",
+      "before": "async buildCategoriesSlide(e){",
+      "after": "async buildCategoriesSlide(e){/* cs-welcome:hook */if(!this.editorInput?.selectedCategory)return csRenderCodeStation(this);/* cs-welcome:hook-end */"
+    }
+  ]
+}

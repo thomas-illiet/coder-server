@@ -1,0 +1,9 @@
+{
+  "replacements": [
+    {
+      "reason": "Hide Accounts wherever the shared visibility check is used; keep the stored user preference intact.",
+      "before": "function fRt(s){return s.getBoolean(wj.ACCOUNTS_VISIBILITY_PREFERENCE_KEY,0,!0)}",
+      "after": "function fRt(s){return!1/* cs-custom-logout:hide-accounts */}"
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+# Recovery snapshots and test installations are not maintained source.
+archive/*.tar.gz
+tests/tmp/
+*.tmp
+.DS_Store

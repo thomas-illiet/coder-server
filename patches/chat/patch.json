@@ -1,0 +1,29 @@
+{
+  "replacements": [
+    {
+      "reason": "Hide the Chat/Agents button beside the command center.",
+      "before": "submenu:O.AgentsTitleBarControlMenu,title:d(9186,null),icon:N.chatSparkle,when:D.and(oe.enabled,D.notEquals(\"config.chat.agentsControl.enabled\",\"hidden\"),D.notEquals(\"config.chat.agentsControl.enabled\",!1),gf.negate()),order:10002});",
+      "after": "submenu:O.AgentsTitleBarControlMenu,title:d(9186,null),icon:N.chatSparkle,when:D.false(),order:10002});"
+    },
+    {
+      "reason": "Hide the alternative Chat title button when the command center is disabled.",
+      "before": "submenu:O.ChatTitleBarMenu,title:d(9188,null),group:\"navigation\",icon:N.chatSparkle,when:D.and(oe.supported,D.and(oe.Setup.hidden.negate()),D.has(\"config.window.commandCenter\").negate()),order:1});",
+      "after": "submenu:O.ChatTitleBarMenu,title:d(9188,null),group:\"navigation\",icon:N.chatSparkle,when:D.false(),order:1});"
+    },
+    {
+      "reason": "Hide the native Chat view, including extension-provided participants.",
+      "before": "ctorDescriptor:new fi(RM),when:D.and(oe.accountPolicyGateActive.negate(),D.or(D.and(oe.Setup.hidden.negate(),oe.Setup.disabledInWorkspace.negate()),oe.panelParticipantRegistered,oe.extensionInvalid))};fe.as(Pr.ViewsRegistry).registerViews([sQn],WNe)",
+      "after": "ctorDescriptor:new fi(RM),when:D.false()};fe.as(Pr.ViewsRegistry).registerViews([sQn],WNe)"
+    },
+    {
+      "reason": "Hide the alternative Chat Update Requirement view.",
+      "before": "when:cAt,openCommandActionDescriptor:{id:\"workbench.action.chat.showUpdateRequired\"",
+      "after": "when:D.false(),openCommandActionDescriptor:{id:\"workbench.action.chat.showUpdateRequired\""
+    },
+    {
+      "reason": "Do not restore an empty Chat container from a previously saved layout.",
+      "before": "a?this.state.initialization.views.containerToRestore.auxiliaryBar=a:",
+      "after": "a&&a!==\"workbench.panel.chat\"?this.state.initialization.views.containerToRestore.auxiliaryBar=a:"
+    }
+  ]
+}
