@@ -3,3 +3,6 @@ archive/*.tar.gz
 tests/tmp/
 *.tmp
 .DS_Store
+node_modules/
+demo/.runtime/
+outputs/*.vsix

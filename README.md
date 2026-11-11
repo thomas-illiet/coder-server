@@ -1,5 +1,10 @@
 # Code Station — independent patches
 
+An installable [Window Launcher extension](extensions/window-launcher/README.md)
+adds **Terminal ↗** and **OpenCode ↗** buttons that open separate windows.
+See the [local Docker demo](demo/README.md) to try it with code-server and OpenCode.
+The extension is independent of the patches below.
+
 Three standalone patch folders for **code-server 4.145.2**. Each has its own
 small application script, source files and documentation. There is **no central
 applicator, shared runtime helper or separate configuration file**.

@@ -1,0 +1,120 @@
+{
+  "name": "code-station-window-launcher",
+  "displayName": "Code Station — Window Launcher",
+  "description": "Open a terminal or OpenCode in a separate window from code-server.",
+  "version": "0.1.0",
+  "publisher": "code-station",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thomas-illiet/coder-server.git"
+  },
+  "engines": {
+    "vscode": "^1.145.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "extensionKind": [
+    "workspace"
+  ],
+  "main": "./extension.cjs",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": false,
+      "description": "Launching a shell or OpenCode requires a trusted workspace."
+    },
+    "virtualWorkspaces": false
+  },
+  "scripts": {
+    "check": "node --check extension.cjs && node --check launcher.cjs",
+    "test": "node --test test/*.test.cjs",
+    "package": "vsce package --no-dependencies --out ../../outputs/code-station-window-launcher-0.1.0.vsix"
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "codeStation.openTerminalWindow",
+        "title": "Open Terminal Window",
+        "category": "Code Station",
+        "icon": "$(terminal)",
+        "enablement": "isWorkspaceTrusted"
+      },
+      {
+        "command": "codeStation.openOpenCodeWindow",
+        "title": "Open OpenCode Window",
+        "category": "Code Station",
+        "icon": "$(sparkle)",
+        "enablement": "isWorkspaceTrusted"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "codeStationLauncher",
+          "title": "Code Station",
+          "icon": "media/launcher.svg"
+        }
+      ]
+    },
+    "views": {
+      "codeStationLauncher": [
+        {
+          "id": "codeStationLauncher.actions",
+          "name": "Open a window"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "codeStationLauncher.actions",
+        "contents": "Your tools, in their own window.\n\n[Terminal ↗](command:codeStation.openTerminalWindow)\n[OpenCode ↗](command:codeStation.openOpenCodeWindow)\n\nKeep this editor open while you work. If your browser blocks the window, allow popups for this site and click Retry.",
+        "when": "isWorkspaceTrusted"
+      },
+      {
+        "view": "codeStationLauncher.actions",
+        "contents": "Trust this workspace to launch a terminal or OpenCode.\n[Manage Workspace Trust](command:workbench.trust.manage)",
+        "when": "!isWorkspaceTrusted"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "codeStation.openTerminalWindow",
+          "when": "view == codeStationLauncher.actions",
+          "group": "navigation@1"
+        },
+        {
+          "command": "codeStation.openOpenCodeWindow",
+          "when": "view == codeStationLauncher.actions",
+          "group": "navigation@2"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Code Station",
+      "properties": {
+        "codeStation.compactWindows": {
+          "type": "boolean",
+          "default": true,
+          "description": "Open new windows in compact mode: hide editor tabs, breadcrumbs and the status bar. The browser controls its own address bar."
+        },
+        "codeStation.openCodePath": {
+          "type": "string",
+          "default": "opencode",
+          "scope": "machine",
+          "description": "OpenCode executable on the machine running code-server. Use a name on PATH or an absolute path, without shell arguments."
+        }
+      }
+    }
+  },
+  "overrides": {
+    "minimatch": "11.0.1"
+  },
+  "devDependencies": {
+    "@vscode/vsce": "4.1.0"
+  }
+}
